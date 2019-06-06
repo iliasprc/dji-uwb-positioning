@@ -34,3 +34,20 @@ Then in the virtual environment for Python3 we launch the node for the UWB syste
 `rosrun djisdk uwbpub.py`
 
 Finally we run the node that subscribes to the position topic and calculates the control commands `rosrun djisdk hover`
+
+
+
+## Reference 
+
+Please cite the paper below if you use this code in your research:
+
+`@inproceedings{papastratis2018indoor,
+  title={Indoor Navigation of Quadrotors via Ultra-Wideband Wireless Technology},
+  author={Papastratis, Ilias and Charalambous, Themistoklis and Pappas, Nikolaos},
+  booktitle={2018 Advances in Wireless and Optical Communications (RTUWO)},
+  pages={106--111},
+  year={2018},
+  organization={IEEE}
+}`
+
+
