@@ -1,4 +1,5 @@
-# DJI-Matrice-100
+# DJI-Matrice-100 autonomous navigation 
+Implementation of Indoor Navigation of Quadrotors via Ultra-Wideband Wireless Technology https://ieeexplore.ieee.org/abstract/document/8587889 
 ## Control of Quadcopter using Ultra Wide Band positioning system from Pozyx
 
 The Pozyx Python library (Pypozyx) is required to work with the pozyx indoor positioning system over USB connection. 
