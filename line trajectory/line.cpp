@@ -67,27 +67,27 @@ int main(int argc, char** argv)
 
 
    /*
-  //imuAcc.open("distacc.txt");
- //	imuG.open("accels.txt");
-  uwb.open("velpos30.txt");
-  comm.open("velcomms30.txt");
-  err.open("pid30.txt");
-  err<<kp<<" "<<ki<<" "<<kd<<" "<<std::endl;
- */
+    imuAcc.open("distacc.txt");
+    imuG.open("accels.txt");
+    uwb.open("velpos30.txt");
+    comm.open("velcomms30.txt");
+    err.open("pid30.txt");
+    err<<kp<<" "<<ki<<" "<<kd<<" "<<std::endl;
+  */
    fileid="k1";
    open_data_files(fileid);
 
-    ROS_INFO("M100 taking off!");
-    t1 = high_resolution_clock::now();
+   ROS_INFO("M100 taking off!");
+   t1 = high_resolution_clock::now();
    t2 = high_resolution_clock::now();
-  ctrlRollPitchYawHeightPub = nh.advertise<sensor_msgs::Joy>("dji_sdk/flight_control_setpoint_rollpitch_yawrate_zposition", 1);
+   ctrlRollPitchYawHeightPub = nh.advertise<sensor_msgs::Joy>("dji_sdk/flight_control_setpoint_rollpitch_yawrate_zposition", 1);
    ros::Subscriber uwbPosition = nh.subscribe("uwb_pos", 1, &uwb_position_callback);
  
 
    takeoff_result = M100monitoredTakeoff();
 
-  // t2 = high_resolution_clock::now();
-   //t4 = high_resolution_clock::now();
+    // t2 = high_resolution_clock::now();
+    //t4 = high_resolution_clock::now();
    if(takeoff_result){
       printf("READY TO CONTROL \n");
    }
