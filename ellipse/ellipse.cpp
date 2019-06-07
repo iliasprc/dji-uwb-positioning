@@ -46,17 +46,14 @@ int main(int argc, char** argv)
  
   ros::Subscriber attitudeSub = nh.subscribe("dji_sdk/attitude", 10, &attitude_callback);
   ros::Subscriber flightStatusSub = nh.subscribe("dji_sdk/flight_status", 10, &flight_status_callback);
-  //::Subscriber displayModeSub = nh.subscribe("dji_sdk/display_mode", 10, &display_mode_callback);
- // ros::Subscriber localPosition = nh.subscribe("dji_sdk/local_position", 10, &local_position_callback);
- // ros::Subscriber gpsSub      = nh.subscribe("dji_sdk/gps_position", 10, &gps_position_callback);
- // ros::Subscriber gpsHealth      = nh.subscribe("dji_sdk/gps_health", 10, &gps_health_callback);
+
   ros::Subscriber imu     =  nh.subscribe("/dji_sdk/imu",2,&imu_callback);
   
-  //ros::Subscriber initialPosition = nh.subscribe("initial_pos", 1, &initial_pos_callback);
+  
 
   // Publish the control signal
   
-// Basic services
+  // Basic services
   sdk_ctrl_authority_service = nh.serviceClient<dji_sdk::SDKControlAuthority> ("dji_sdk/sdk_control_authority");
   drone_task_service         = nh.serviceClient<dji_sdk::DroneTaskControl>("dji_sdk/drone_task_control");
   query_version_service      = nh.serviceClient<dji_sdk::QueryDroneVersion>("dji_sdk/query_drone_version");
@@ -66,29 +63,19 @@ int main(int argc, char** argv)
   bool takeoff_result;
 
 
-   /*
-  //imuAcc.open("distacc.txt");
- //	imuG.open("accels.txt");
-  uwb.open("velpos30.txt");
-  comm.open("velcomms30.txt");
-  err.open("pid30.txt");
-  err<<kp<<" "<<ki<<" "<<kd<<" "<<std::endl;
- */
+
    fileid="k1";
    open_data_files(fileid);
 
-    ROS_INFO("M100 taking off!");
+   ROS_INFO("M100 taking off!");
    takeoff_result = M100monitoredTakeoff();
-  ctrlRollPitchYawHeightPub = nh.advertise<sensor_msgs::Joy>("dji_sdk/flight_control_setpoint_rollpitch_yawrate_zposition", 1);
+   ctrlRollPitchYawHeightPub = nh.advertise<sensor_msgs::Joy>("dji_sdk/flight_control_setpoint_rollpitch_yawrate_zposition", 1);
    ros::Subscriber uwbPosition = nh.subscribe("uwb_pos", 1, &uwb_position_callback);
- 
-  // t2 = high_resolution_clock::now();
-   //t4 = high_resolution_clock::now();
+
    if(takeoff_result){
       printf("READY TO CONTROL \n");
    }
-   //ctrlRollPitchYawHeightPub = nh.advertise<sensor_msgs::Joy>("dji_sdk/flight_control_setpoint_rollpitch_yawrate_zposition", 1);
-   //ros::Subscriber uwbPosition = nh.subscribe("uwb_pos", 1, &uwb_position_callback);
+
  
   ros::spin();
   return 0;
@@ -118,15 +105,14 @@ void pid_pos_form(){
   roll=kp*(desired_pos.y-curr_pos.y)+kd*(desired_pos.y-curr_pos.y-y_error);
   
   if (fabs(pitch) >= max_angle)
-
-    pitchdes = (pitch>0) ? max_angle : -1 * max_angle;
+     pitchdes = (pitch>0) ? max_angle : -1 * max_angle;
   else
-    pitchdes = pitch;
+     pitchdes = pitch;
 
   if (fabs(roll) >= max_angle)
-    rolldes = (roll>0) ? max_angle : -1 * max_angle;
+     rolldes = (roll>0) ? max_angle : -1 * max_angle;
   else
-    rolldes = roll;
+     rolldes = roll;
 
   sensor_msgs::Joy controlmsg;
   controlmsg.axes.push_back(rolldes);
@@ -135,7 +121,7 @@ void pid_pos_form(){
   controlmsg.axes.push_back(0);
   ctrlRollPitchYawHeightPub.publish(controlmsg);
 
- // comm<<pitch<<" "<<pitchd<<" "<<roll<<" "<<rolld<<std::endl ;
+
 
   x_error=desired_pos.x-curr_pos.x;
   y_error=desired_pos.y-curr_pos.y;
@@ -144,9 +130,11 @@ void pid_pos_form(){
 
 
 
-/*
-void pid_vel_form(){
 
+void pid_vel_form(){
+ /*
+   PID CONTROL IN VELOCITY FORM
+ */
 
   x_error=desired_pos.x-curr_pos.x;
   y_error=desired_pos.y-curr_pos.y;
@@ -182,23 +170,22 @@ void pid_vel_form(){
   y_error1=y_error;
 }
 
-*/
+
 
 void uwb_position_callback(const dji_sdk_demo::Pos::ConstPtr& msg) {
 
 
   curr_pos = *msg;
-//ROS_INFO("I heard: [%d]",( posi.nses));
-   pid_pos_form(); 
-   //max pitch and roll angle 0.1 rad
+  //ROS_INFO("I heard: [%d]",( posi.nses));
+  pid_pos_form(); 
+  //max pitch and roll angle 0.1 rad
   int elapsed_time = ros::Time::now().toNSec();// - posi.nses;
   //-1 pitch opposite sign
   desired_pos.x=5.0+2.0*sin(step);
   desired_pos.y=2.5+1.0*cos(step);
   step=step+0.01;
   write_data_flight();
-//comm<<_span.count()<<std::endl;
-  //elapsed_time=ros::Time::now().toNSec()-elapsed_time+curr_pos.time; 
+
 
 
 
@@ -207,30 +194,7 @@ void uwb_position_callback(const dji_sdk_demo::Pos::ConstPtr& msg) {
 
 void imu_callback(const sensor_msgs::Imu::ConstPtr& msg){
   curr_imu=*msg;
-  /*
-    t1 = high_resolution_clock::now();
-    duration<double> time_span = duration_cast<duration<double>>(t1 - t2);
-    t2 = high_resolution_clock::now();
 
-  //  auto duration = duration_cast<microseconds>( t2 - t1 ).count()
-   
-  
-  
-  imuG<<curr_imu.linear_acceleration.x<<" "<<curr_imu.linear_acceleration.y<<" "<<curr_imu.linear_acceleration.z<<" "<<time_span.count()<<std::endl;
-  //imuG<<curr_imu.angular_velocity.x<<" "<<curr_imu.angular_velocity.y<<" "<<curr_imu.angular_velocity.z<<std::endl;
-  xspeed+=((curr_imu.linear_acceleration.x+ax_prev)/2.0)*time_span.count();
-  yspeed+=((curr_imu.linear_acceleration.y+ay_prev)/2.0)*time_span.count();
-
-  dximu+=((xspeed_prev+xspeed)/2.0)*time_span.count();  
-  dyimu+=((yspeed_prev+yspeed)/2.0)*time_span.count(); 
-  imuAcc<<dximu<<" "<<dyimu<<" "<<xspeed<<" "<<yspeed<<std::endl;
-//imuAcc<<curr_imu.linear_acceleration.x<<" "<<curr_imu.linear_acceleration.y<<" "<<curr_imu.linear_acceleration.z<<" "<<dt<<std::endl;
-  //imuG<<curr_imu.angular_velocity.x<<" "<<curr_imu.angular_velocity.y<<" "<<curr_imu.angular_velocity.z<<std::endl;
-xspeed_prev=xspeed;
-yspeed_prev=yspeed;
-ax_prev=curr_imu.linear_acceleration.x;
-ay_prev=curr_imu.linear_acceleration.y;
-  */
 
 }
 
@@ -249,23 +213,6 @@ void attitude_callback(const geometry_msgs::QuaternionStamped::ConstPtr& msg)
   rpy=toEulerAngle(current_atti);
   printf("Yaw is %f \n",rpy.z );
 }
-
-/*
-void local_position_callback(const geometry_msgs::PointStamped::ConstPtr& msg)
-{
-  local_position=*msg;
-}
-
-
-void gps_position_callback(const sensor_msgs::NavSatFix::ConstPtr& msg) {
-  current_gps_position = *msg;
-}
-
-void gps_health_callback(const std_msgs::UInt8::ConstPtr& msg) {
-  current_gps_health = msg->data;
-}
-
-*/
 
 
 
