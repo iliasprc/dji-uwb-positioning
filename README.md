@@ -41,6 +41,11 @@ Then in the virtual environment for Python3 we launch the node for the UWB syste
 
 Finally we run the node that subscribes to the position topic and calculates the control commands `rosrun djisdk hover`
 
+[![Watch the video](https://img.youtube.com/vi/1XMq0vvvyFc/0.jpg)
+
+(https://www.youtube.com/watch?v=1XMq0vvvyFc)
+
+
 
 
 ## Reference 
