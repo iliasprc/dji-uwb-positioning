@@ -1,14 +1,18 @@
 # DJI-Matrice-100 autonomous navigation 
-Implementation of Indoor Navigation of Quadrotors via Ultra-Wideband Wireless Technology https://ieeexplore.ieee.org/abstract/document/8587889 
+Implementation of Indoor Navigation of Quadrotors via Ultra-Wideband Wireless Technology
+
+https://ieeexplore.ieee.org/abstract/document/8587889 
+
+![alt text](https://github.com/IliasPap/DJI-Matrice-100/blob/master/images/drone1.jpg)
 ## Control of Quadcopter using Ultra Wide Band positioning system from Pozyx
 
 The Pozyx Python library (Pypozyx) is required to work with the pozyx indoor positioning system over USB connection. 
 
 https://github.com/pozyxLabs/Pozyx-Python-library
 
-The library however supports only Python3 while the ROS supports only Python2.  
+The library supports only Python3 while the ROS supports only Python2.  
 
-We created a virtual environment preset to run Python3 scripts so we can use our sensors with the ROS system.
+To run with Python3 create a virtual environment to use UWB sensors with the ROS system.
 
 ## Virtual environment installation and activation
 
