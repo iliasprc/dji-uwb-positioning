@@ -4,6 +4,8 @@ Implementation of Indoor Navigation of Quadrotors via Ultra-Wideband Wireless Te
 
 The Pozyx Python library (Pypozyx) is required to work with the pozyx indoor positioning system over USB connection. 
 
+https://github.com/pozyxLabs/Pozyx-Python-library
+
 The library however supports only Python3 while the ROS supports only Python2.  
 
 We created a virtual environment preset to run Python3 scripts so we can use our sensors with the ROS system.
