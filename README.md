@@ -46,9 +46,8 @@ Starting Position
 
 # Video from autonomous flight
 
-[![Watch the video](https://img.youtube.com/vi/1XMq0vvvyFc/0.jpg)
 
-(https://www.youtube.com/watch?v=1XMq0vvvyFc)
+[![Alt text](https://img.youtube.com/vi/1XMq0vvvyFc/0.jpg)](https://www.youtube.com/watch?v=1XMq0vvvyFc)
 
 
 
